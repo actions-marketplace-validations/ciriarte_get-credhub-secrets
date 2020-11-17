@@ -1,0 +1,40 @@
+name: 'get-credhub-secrets'
+description: 'Fetch credhub secrets'
+inputs:
+  api: 
+    description: Set the CredHub API target where commands are sent
+    required: true
+  get:
+    description: |-
+      Newline-separated list of secrets to fetch. Secrets
+      must be of the format <path>/<to>/<secret> or <path>/<to>/<secret>.<key>
+    required: true
+  username:
+    description: Authentication username
+    required: true
+  password:
+    description: Authentication password
+    required: true
+  ca:
+    description: Trusted CA certificate (x509)
+    required: false
+  insecureSkipTLSValidation:
+    description: Disable TLS validation (not recommended)
+    required: false
+    default: "false"
+runs:
+  using: 'docker'
+  image: './get-credhub-secrets/Dockerfile'
+  args:
+    - -api
+    - ${{ inputs.api }}
+    - -username
+    - ${{ inputs.username }}
+    - -password
+    - ${{ inputs.password }}
+    - -get
+    - ${{ inputs.get }}
+    - -ca
+    - ${{ inputs.ca }}
+    - -insecureSkipTLSValidation
+    - ${{ inputs.insecureSkipTLSValidation }}
