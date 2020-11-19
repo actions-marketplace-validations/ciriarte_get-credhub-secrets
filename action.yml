@@ -1,7 +1,7 @@
 name: 'get-credhub-secrets'
 description: 'Fetch credhub secrets'
 branding:
-  icon: 'unlock'  
+  icon: 'unlock'
   color: 'purple'
 inputs:
   api: 

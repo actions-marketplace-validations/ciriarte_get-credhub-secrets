@@ -1,5 +1,8 @@
 name: 'get-credhub-secrets'
 description: 'Fetch credhub secrets'
+branding:
+  icon: 'unlock'
+  color: 'purple'
 inputs:
   api: 
     description: Set the CredHub API target where commands are sent
@@ -24,7 +27,7 @@ inputs:
     default: "false"
 runs:
   using: 'docker'
-  image: 'Dockerfile'
+  image: './get-credhub-secrets/Dockerfile'
   args:
     - -api
     - ${{ inputs.api }}

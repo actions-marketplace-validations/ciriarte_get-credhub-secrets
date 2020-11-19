@@ -25,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Fetching Secrets
-        uses: ciriarte/get-credhub-secrets@v1
+        uses: ./get-credhub-secrets
         id: credhub
         with:
           api: "https://localhost:9000"
