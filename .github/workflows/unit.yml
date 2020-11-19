@@ -1,0 +1,42 @@
+on: [push]
+
+jobs:
+  get_credhub_secrets:
+    services:
+      uaa:
+        image: pcfseceng/uaa
+        volumes:
+          - ./config/uaa.yml:/uaa/uaa.yml
+        ports:
+        - 8080:8080
+
+      credhub:
+        image: orangeopensource/credhub
+        ports:
+          - "9000:9000"
+        env:
+          UAA_URL: http://localhost:8080/uaa
+          UAA_INTERNAL_URL: http://uaa:8080/uaa
+
+      
+    runs-on: ubuntu-latest
+    name: get-credhub-secrets [Unit Test]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Fetching Secrets
+        uses: ciriarte/get-credhub-secrets@v1
+        id: credhub
+        with:
+          api: "https://localhost:9000"
+          username: "some_user"
+          password: "some_password"
+          insecureSkipTLSValidation: "true"
+          get: |-
+            HITCHHIKER:/concourse/main/the_ultimate_question_of_life_the Universe_and_everything
+            BIRTH_CERTIFICATE: /concourse/main/birth.certificate
+          
+      - name: Listing the secrets
+        run: |-
+          echo "The tracker token ${{ steps.credhub.outputs.HITCHHIKER }}"
+          echo "A CA cert ${{ steps.credhub.outputs.BIRTH_CERTIFICATE }}"
