@@ -13,7 +13,7 @@ jobs:
         image: pcfseceng/uaa
         ports:
         - 8080:8080
-        options: -v ${{ github.workspace }}/config/uaa.yml:/uaa/uaa.yml
+        options: --mount type=bind,source=${{ github.workspace }}/config/uaa.yml,target=/uaa/uaa.yml
 
       credhub:
         image: orangeopensource/credhub
