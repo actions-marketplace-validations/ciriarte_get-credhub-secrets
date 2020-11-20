@@ -1,6 +1,12 @@
 on: [push]
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
   get_credhub_secrets:
     services:
       uaa:
@@ -20,9 +26,8 @@ jobs:
       
     runs-on: ubuntu-latest
     name: get-credhub-secrets [Unit Test]
+    needs: setup
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Set Some Secrets
         run: |-
           TOKEN=$(curl 'http://localhost:8080/oauth/token' -i -X POST \
