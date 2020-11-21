@@ -1,32 +1,29 @@
 on: [push]
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
   get_credhub_secrets:
     services:
       uaa:
-        image: pcfseceng/uaa
+        # Do NOT use this image unless you know what you're doing.
+        # It is preconfigured with a credhub client with known
+        # username and password for testing purposes.
+        image: ghcr.io/ciriarte/insecure-uaa
         ports:
         - 8080:8080
-        options: --mount type=bind,source=${{ github.workspace }}/config/uaa.yml,target=/uaa/uaa.yml
 
       credhub:
         image: orangeopensource/credhub
         ports:
-          - "9000:9000"
+        - "9000:9000"
         env:
           UAA_URL: http://localhost:8080/uaa
           UAA_INTERNAL_URL: http://uaa:8080/uaa
       
     runs-on: ubuntu-latest
     name: get-credhub-secrets [Unit Test]
-    needs: setup
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Set Some Secrets
         run: |-
           TOKEN=$(curl 'http://localhost:8080/oauth/token' -i -X POST \
