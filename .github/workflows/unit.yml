@@ -29,12 +29,12 @@ jobs:
         uses: actions/checkout@v2
       - name: Set Some Secrets
         run: |-
-          TOKEN=$(curl 'http://localhost:8080/oauth/token' -i -X POST \
+          TOKEN=$(curl 'https://localhost:8080/oauth/token' -k -i -X POST \
             -H 'Content-Type: application/x-www-form-urlencoded' \
             -H 'Accept: application/json' \
             -d 'client_id=credhub&client_secret=password&scope=scim.write&grant_type=client_credentials&token_format=opaque')
 
-          curl 'https://localhost:9000' -i -X PUT \
+          curl 'https://localhost:9000' -k -i -X PUT \
               -H 'Content-Type: application/json' \
               -H "Authorization: Bearer $TOKEN" \
               -d '{
