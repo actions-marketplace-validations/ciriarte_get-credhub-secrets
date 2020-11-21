@@ -8,6 +8,9 @@ jobs:
         # It is preconfigured with a credhub client with known
         # username and password for testing purposes.
         image: ghcr.io/ciriarte/insecure-uaa
+        credentials:
+          username: ${{ github.actor }}
+          password: ${{ secrets.ghcr_token }}
         ports:
         - 8080:8080
 
